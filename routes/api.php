@@ -63,4 +63,4 @@ Route::get("status", function(){
         "status" => "OK",
         "message" => "no issues with systemn"
     ], 200, $headers);
-});
+})->middleware(\Barryvdh\Cors\HandleCors::class);
