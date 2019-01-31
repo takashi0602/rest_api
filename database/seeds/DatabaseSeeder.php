@@ -12,6 +12,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        Task::truncate();
+
         Task::create(["name" => "牛乳を買う"]);
         Task::create(["name" => "本を読む"]);
         Task::create(["name" => "部屋を掃除する"]);
