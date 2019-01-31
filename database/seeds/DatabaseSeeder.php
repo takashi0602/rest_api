@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use App\Task;
 
 class DatabaseSeeder extends Seeder
 {
@@ -11,6 +12,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        Task::create(["name" => "牛乳を買う"]);
+        Task::create(["name" => "本を読む"]);
+        Task::create(["name" => "部屋を掃除する"]);
         // $this->call(UsersTableSeeder::class);
     }
 }
