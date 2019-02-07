@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use App\Task;
+use App\User;
 
 /*
 |--------------------------------------------------------------------------
@@ -64,3 +65,49 @@ Route::get("status", function(){
         "message" => "no issues with systemn"
     ], 200, $headers);
 })->middleware(\Barryvdh\Cors\HandleCors::class);
+
+Route::post("/auth/login", function() {
+    $email = request()->get("email");
+    $password = request()->get("password");
+
+    $user = User::where("email", $email)->first();
+    if ($user && Hash::check($password, $user->password)) {
+        $token = str_random();
+        $user->token = $token;
+        $user->save();
+        return [
+            "token" => $token,
+            "user" => $user
+        ];
+    } else {
+        abort(401);
+    }
+});
+
+Route::get("/profile", function() {
+//    $token = request()->bearerToken();
+//    $user = User::where("token", $token)->first();
+    $user = Auth::guard("api")->user();
+//    if ($token && $user) {
+//        return [
+//            "user" => $user
+//        ];
+//    } else {
+//        abort(401);
+//    }
+    return [
+        "user" => $user
+    ];
+})->middleware("auth:api");
+
+Route::post("/auth/logout", function() {
+    $token = request()->bearerToken();
+    $user = User::where("token", $token)->first();
+    if ($user) {
+        $user->token = null;
+        $user->save();
+        return [];
+    } else {
+        abort(401);
+    }
+});
