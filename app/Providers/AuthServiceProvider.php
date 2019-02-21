@@ -2,10 +2,12 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
-use App\User;
-use Auth;
+
+use Illuminate\Auth\AuthManager;
+use Illuminate\Auth\RequestGuard;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -34,6 +36,22 @@ class AuthServiceProvider extends ServiceProvider
             } else {
                 return null;
             }
+        });
+    }
+
+    public function register()
+    {
+        app()->extend(AuthManager::class,function(AuthManager $auth){
+            $auth->extend('custom-token', function () use($auth) {
+                $guard = new RequestGuard(function(){
+                    $token = request()->bearerToken();
+                    return \App\User::where("token",$token)->first();
+                }, request(), $auth->createUserProvider());
+
+                $this->app->refresh('request', $guard, 'setRequest');
+
+                return $guard;
+            });
         });
     }
 }

@@ -111,3 +111,5 @@ Route::post("/auth/logout", function() {
         abort(401);
     }
 });
+
+Route::get("task/list", \App\Http\Actions\TaskListAction::class."@handle");
