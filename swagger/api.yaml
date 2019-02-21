@@ -1,0 +1,11 @@
+openapi: "3.0.2"
+info:
+  version: 1.0.0
+  title: OSA Sample Document
+  license:
+    name: MIT
+servers:
+  - url: http://laravel-api.lec.cafe/api
+paths:
+  /tasks:
+    $ref: ./entries/tasks.yml

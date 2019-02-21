@@ -29,14 +29,14 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        Auth::viaRequest('custom-token', function ($request) {
-            $token = request()->bearerToken();
-            if ($token) {
-                return User::where("token", $token)->first();
-            } else {
-                return null;
-            }
-        });
+//        Auth::viaRequest('custom-token', function ($request) {
+//            $token = request()->bearerToken();
+//            if ($token) {
+//                return User::where("token", $token)->first();
+//            } else {
+//                return null;
+//            }
+//        });
     }
 
     public function register()
